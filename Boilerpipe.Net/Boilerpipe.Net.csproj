@@ -2,15 +2,20 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
+    <PackageId>Boilerpipe.Net.Core</PackageId>
+    <Authors>Charalambos Theodorou</Authors>
+    <Company />
+    <Product />
+    <Description>Boilerpipe text extraction library ported to .Net Core based on rasmusjp's implementation in .NET 4.5 which you can find here https://github.com/rasmusjp/boilerpipe.net</Description>
+    <PackageProjectUrl>https://github.com/cgtheodorou/boilerpipe.net-core</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/cgtheodorou/boilerpipe.net-core</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>Boilerpipe .NET Core Text Extraction</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.5.1" />
-    <PackageReference Include="System.Collections.NonGeneric" Version="4.3.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Sax\Sax.csproj" />
+    <PackageReference Include="Sax.Net.Core" Version="1.0.0" />
   </ItemGroup>
 
 </Project>
