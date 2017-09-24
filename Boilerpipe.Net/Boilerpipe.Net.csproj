@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.5.1" />
-    <PackageReference Include="Sax.Net.Core" Version="1.0.0" />
+    <PackageReference Include="Sax.Net.Core" Version="1.0.2" />
   </ItemGroup>
 
 </Project>
