@@ -11,7 +11,15 @@
     <RepositoryUrl>https://github.com/cgtheodorou/boilerpipe.net-core</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>Boilerpipe .NET Core Text Extraction</PackageTags>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.5.1" />
