@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.5</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <PackageId>Boilerpipe.Net.Core</PackageId>
     <Authors>Charalambos Theodorou</Authors>
     <Company />
@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.5.1" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.23" />
     <PackageReference Include="Sax.Net.Core" Version="1.0.2" />
   </ItemGroup>
 
