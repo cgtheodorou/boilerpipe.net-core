@@ -30,6 +30,11 @@ The types it exposed through this library's API (`InputSource`, `IAttributes`, `
 `BoilerpipeHtmlParser.SetContentHandler(IContentHandler)` has been removed, since it silently discarded the handler.
 An `InputSource` with a `Stream` and no `Encoding` now detects the encoding instead of throwing.
 
+Extraction results change in 2.0, and for most pages they get noticeably better.
+In 1.x the HTML parser reported every text node as a separate element, so inline markup such as links or bold text split sentences into separate blocks, and the document title was never detected.
+Text is now parsed the way the original Java boilerpipe does it, which keeps inline text together, populates `TextDocument.Title`, and lets `ArticleExtractor` use the title to locate the article.
+HTML entities such as `&amp;`, `&nbsp;` and `&#8212;` are now decoded instead of appearing literally in the extracted text.
+
 # License
 
 Boilerpipe.Net is licensed under [LGPL V3](LICENSE).

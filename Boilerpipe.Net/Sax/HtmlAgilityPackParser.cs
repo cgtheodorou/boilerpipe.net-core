@@ -30,27 +30,31 @@ namespace Boilerpipe.Net.Sax {
     }
 
     private void TraverseNode(HtmlNode htmlNode) {
-      if (htmlNode == null || htmlNode.NodeType == HtmlNodeType.Comment) {
-        return;
-      }
+      switch (htmlNode.NodeType) {
+        case HtmlNodeType.Document:
+          TraverseChildren(htmlNode);
+          break;
+        case HtmlNodeType.Text:
+          string text = HtmlEntity.DeEntitize(htmlNode.InnerText);
+          _contentHandler.Characters(text.ToCharArray(), 0, text.Length);
+          break;
+        case HtmlNodeType.Element:
+          var attributes = new Attributes();
+          foreach (HtmlAttribute attribute in htmlNode.Attributes) {
+            attributes.Add(attribute.Name, attribute.Value);
+          }
 
-      var attributes = new Attributes();
-      if (htmlNode.HasAttributes) {
-        foreach (HtmlAttribute attribute in htmlNode.Attributes) {
-          attributes.Add(attribute.Name, attribute.Value);
-        }
+          _contentHandler.StartElement(null, htmlNode.Name, htmlNode.Name, attributes);
+          TraverseChildren(htmlNode);
+          _contentHandler.EndElement(null, htmlNode.Name, htmlNode.Name);
+          break;
       }
+    }
 
-      _contentHandler.StartElement(null, htmlNode.Name, htmlNode.Name, attributes);
-      if (htmlNode.NodeType == HtmlNodeType.Text) {
-        string text = htmlNode.InnerText;
-        _contentHandler.Characters(text.ToCharArray(), 0, text.Length);
-      } else if (htmlNode.HasChildNodes) {
-        foreach (HtmlNode childNode in htmlNode.ChildNodes) {
-          TraverseNode(childNode);
-        }
+    private void TraverseChildren(HtmlNode htmlNode) {
+      foreach (HtmlNode childNode in htmlNode.ChildNodes) {
+        TraverseNode(childNode);
       }
-      _contentHandler.EndElement(null, htmlNode.Name, htmlNode.Name);
     }
   }
 }

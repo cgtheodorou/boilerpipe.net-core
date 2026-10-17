@@ -64,6 +64,29 @@ namespace Boilerpipe.Net.Tests {
       Assert.Equal(ReadExpected("news-article", "article"), ArticleExtractor.Instance.GetText(new InputSource(FixturePath("news-article"))));
     }
 
+    [Theory]
+    [InlineData("news-article", "City Council Approves New Riverside Park | The Daily Ledger")]
+    [InlineData("blog-post", "Notes on Sourdough Hydration - Flour and Water")]
+    public void GetTextDocument_ExtractsTitle(string fixture, string expectedTitle) {
+      var input = new BoilerpipeSAXInput(new InputSource(new StringReader(ReadFixture(fixture))));
+      Assert.Equal(expectedTitle, input.GetTextDocument().Title);
+    }
+
+    [Fact]
+    public void GetText_InlineElements_StayInOneBlock() {
+      const string html = "<html><body><p>Read <a href=\"/a\">the full report</a> or <b>skip</b> <i>ahead</i>.</p></body></html>";
+      Assert.Equal("Read the full report or skip ahead.\n", KeepEverythingExtractor.Instance.GetText(html));
+    }
+
+    [Fact]
+    public void GetText_DecodesEntitiesOnce() {
+      const string html = "<html><head><title>Fish &amp; Chips &#8211; &lt;Menu&gt;</title></head>"
+        + "<body><p>Caf&eacute;&nbsp;prices &#x2192; write &amp;lt; for &lt;</p></body></html>";
+      var input = new BoilerpipeSAXInput(new InputSource(new StringReader(html)));
+      Assert.Equal("Fish & Chips – <Menu>", input.GetTextDocument().Title);
+      Assert.Equal("Café prices → write &lt; for <\n", KeepEverythingExtractor.Instance.GetText(html));
+    }
+
     [Fact]
     public void GetText_EmptyHtml_ReturnsEmpty() {
       Assert.Equal(string.Empty, CommonExtractors.ArticleExtractor.GetText(string.Empty));
