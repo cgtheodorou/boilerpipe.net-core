@@ -3,6 +3,7 @@ namespace Boilerpipe.Net.Document {
   using System.Collections;
   using System.Collections.Generic;
   using System.Diagnostics;
+  using System.Globalization;
   using System.Linq;
   using System.Text;
 
@@ -198,9 +199,8 @@ namespace Boilerpipe.Net.Document {
     }
 
     public override string ToString() {
-      return "[" + _offsetBlocksStart + "-" + _offsetBlocksEnd + ";tl=" + _tagLevel + "; nw=" + _numWords + ";nwl="
-             + _numWrappedLines + ";ld=" + _linkDensity + "]\t" + (IsContent ? "CONTENT" : "boilerplate") + ","
-             + string.Join(",", Labels ?? Enumerable.Empty<string>()) + "\n" + Text;
+      return string.Create(CultureInfo.InvariantCulture,
+        $"[{_offsetBlocksStart}-{_offsetBlocksEnd};tl={_tagLevel}; nw={_numWords};nwl={_numWrappedLines};ld={_linkDensity}]\t{(IsContent ? "CONTENT" : "boilerplate")},{string.Join(",", Labels ?? Enumerable.Empty<string>())}\n{Text}");
     }
 
     /// <summary>

@@ -12,7 +12,7 @@ namespace Boilerpipe.Net.Filters.Heuristics {
   ///  specific to the news domain.
   /// </summary>
   public sealed class DocumentTitleMatchClassifier : IBoilerpipeFilter {
-    private readonly ISet<string> _potentialTitles;
+    private readonly HashSet<string> _potentialTitles;
 
     /// <summary>
     /// Creates a new instance of <see cref="DocumentTitleMatchClassifier"/>
@@ -66,7 +66,7 @@ namespace Boilerpipe.Net.Filters.Heuristics {
       foreach (TextBlock tb in doc.TextBlocks) {
         string text = tb.Text.Trim();
         foreach (string candidate in _potentialTitles) {
-          if (candidate.Equals(text)) {
+          if (candidate.Equals(text, StringComparison.Ordinal)) {
             tb.AddLabel(DefaultLabels.TITLE);
             changes = true;
           }
@@ -76,7 +76,7 @@ namespace Boilerpipe.Net.Filters.Heuristics {
       return changes;
     }
 
-    private String GetLongestPart(string title, string pattern) {
+    private static string GetLongestPart(string title, string pattern) {
       String[] parts = Regex.Split(title, pattern);
       if (parts.Length == 1) {
         return null;

@@ -3,8 +3,6 @@ namespace Boilerpipe.Net.Sax {
 
   using Boilerpipe.Net.Document;
 
-  using global::Sax.Net;
-
   /// <summary>
   ///     Parses an <see cref="InputSource" /> using SAX and returns a <see cref="TextDocument" />.
   /// </summary>
@@ -37,8 +35,6 @@ namespace Boilerpipe.Net.Sax {
       try {
         parser.Parse(_source);
       } catch (IOException ex) {
-        throw new BoilerpipeProcessingException(ex.Message, ex);
-      } catch (SAXException ex) {
         throw new BoilerpipeProcessingException(ex.Message, ex);
       }
 

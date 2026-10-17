@@ -1,11 +1,10 @@
 namespace Boilerpipe.Net.Sax {
   using System;
+  using System.Globalization;
   using System.Text.RegularExpressions;
 
   using Boilerpipe.Net.Document;
   using Boilerpipe.Net.Labels;
-
-  using global::Sax.Net;
 
   /// <summary>
   ///   Defines an action that is to be performed whenever a particular tag occurs during HTML parsing.
@@ -53,7 +52,7 @@ namespace Boilerpipe.Net.Sax {
     private CommonTagActions() {
     }
 
-    private class AnchorTextTagAction : ITagAction {
+    private sealed class AnchorTextTagAction : ITagAction {
       public bool Start(BoilerpipeHtmlContentHandler instance, string uri, string localName, string qName, IAttributes attributes) {
         if (instance.InAnchor++ > 0) {
           // as nested A elements are not allowed per specification, we
@@ -92,7 +91,7 @@ namespace Boilerpipe.Net.Sax {
       }
     };
 
-    private class BlockLevelTagAction : ITagAction {
+    private sealed class BlockLevelTagAction : ITagAction {
       public bool Start(BoilerpipeHtmlContentHandler instance, string uri, string localName, string qName, IAttributes attributes) {
         return true;
       }
@@ -109,7 +108,7 @@ namespace Boilerpipe.Net.Sax {
     }
 
     /// <summary>
-    ///   <see cref="CommonTagActionst" /> for block-level elements, which triggers some <see cref="LabelAction" /> on the
+    ///   <see cref="CommonTagActions" /> for block-level elements, which triggers some <see cref="LabelAction" /> on the
     ///   generated <see cref="TextBlock" />.
     /// </summary>
     public sealed class BlockTagLabelAction : ITagAction {
@@ -159,14 +158,14 @@ namespace Boilerpipe.Net.Sax {
       }
     }
 
-    private class FontTagAction : ITagAction {
+    private sealed class FontTagAction : ITagAction {
       public bool Start(BoilerpipeHtmlContentHandler instance, string uri, string localName, string qName, IAttributes attributes) {
-        string sizeAttr = attributes. GetValue("size");
+        string sizeAttr = attributes.GetValue("size");
         if (sizeAttr != null) {
           Match m = FontSizeRegex.Match(sizeAttr);
           if (m.Success) {
             string rel = m.Groups[1].Value;
-            int val = int.Parse(m.Groups[2].Value);
+            int val = int.Parse(m.Groups[2].Value, CultureInfo.InvariantCulture);
             int size;
             if (rel.Length == 0) {
               // absolute
@@ -213,7 +212,7 @@ namespace Boilerpipe.Net.Sax {
       }
     };
 
-    private class IgnoreableElementTagAction : ITagAction {
+    private sealed class IgnoreableElementTagAction : ITagAction {
       public bool Start(BoilerpipeHtmlContentHandler instance, string uri, string localName, string qName, IAttributes attributes) {
         instance.InIgnorableElement++;
         return true;
@@ -231,7 +230,7 @@ namespace Boilerpipe.Net.Sax {
       }
     }
 
-    private class InlineNoWhitespaceTagAction : ITagAction {
+    private sealed class InlineNoWhitespaceTagAction : ITagAction {
       public bool Start(BoilerpipeHtmlContentHandler instance, string uri, string localName, string qName, IAttributes attributes) {
         return false;
       }
@@ -276,7 +275,7 @@ namespace Boilerpipe.Net.Sax {
       }
     }
 
-    private class InlineWhitespaceTagAction : ITagAction {
+    private sealed class InlineWhitespaceTagAction : ITagAction {
       public bool Start(BoilerpipeHtmlContentHandler instance, string uri, string localName, string qName, IAttributes attributes) {
         instance.AddWhitespaceIfNecessary();
         return false;
@@ -294,7 +293,7 @@ namespace Boilerpipe.Net.Sax {
       }
     }
 
-    private class TaBodyTagAction : ITagAction {
+    private sealed class TaBodyTagAction : ITagAction {
       public bool Start(BoilerpipeHtmlContentHandler instance, string uri, string localName, string qName, IAttributes attributes) {
         instance.FlushBlock();
         instance.InBody++;

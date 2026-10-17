@@ -24,12 +24,12 @@
       return Classifier.Process(doc);
     }
 
-    private class ClassifierBoilerpipeFilter : IBoilerpipeFilter {
+    private sealed class ClassifierBoilerpipeFilter : IBoilerpipeFilter {
       public bool Process(TextDocument doc) {
         List<TextBlock> textBlocks = doc.TextBlocks;
         bool hasChanges = false;
 
-        IEnumerator<TextBlock> it = textBlocks.GetEnumerator();
+        List<TextBlock>.Enumerator it = textBlocks.GetEnumerator();
         if (!it.MoveNext()) {
           return false;
         }

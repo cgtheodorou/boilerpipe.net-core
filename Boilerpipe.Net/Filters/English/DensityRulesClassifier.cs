@@ -19,7 +19,7 @@ namespace Boilerpipe.Net.Filters.English {
       List<TextBlock> textBlocks = doc.TextBlocks;
       bool hasChanges = false;
 
-      IEnumerator<TextBlock> it = textBlocks.GetEnumerator();
+      List<TextBlock>.Enumerator it = textBlocks.GetEnumerator();
       if (!it.MoveNext()) {
         return false;
       }

@@ -9,13 +9,10 @@ namespace Boilerpipe.Net.Sax {
   using Boilerpipe.Net.Labels;
   using Boilerpipe.Net.Util;
 
-  using global::Sax.Net;
-  using global::Sax.Net.Helpers;
-
   /// <summary>
   ///   A simple ContentHandler used by <see cref="BoilerpipeHtmlParser" />.
   /// </summary>
-  public class BoilerpipeHtmlContentHandler : DefaultHandler {
+  public class BoilerpipeHtmlContentHandler : IContentHandler {
     public const string ANCHOR_TEXT_START = "$\ue00a<";
     public const string ANCHOR_TEXT_END = ">\ue00a$";
 
@@ -27,10 +24,10 @@ namespace Boilerpipe.Net.Sax {
     private readonly StringBuilder _textBuffer = new StringBuilder();
 
     internal LinkedList<int?> FontSizeStack = new LinkedList<int?>();
-    internal int InAnchor = 0;
-    internal int InBody = 0;
-    internal int InIgnorableElement = 0;
-    internal bool SbLastWasWhitespace = false;
+    internal int InAnchor;
+    internal int InBody;
+    internal int InIgnorableElement;
+    internal bool SbLastWasWhitespace;
     internal StringBuilder TokenBuffer = new StringBuilder();
 
     private int _blockTagLevel = -1;
@@ -38,7 +35,6 @@ namespace Boilerpipe.Net.Sax {
     private bool _flush;
     private bool _inAnchorText;
     private string _lastEndTag;
-    private Event _lastEvent = Event.None;
     private string _lastStartTag;
     private int _offsetBlocks;
     private int _tagLevel;
@@ -82,14 +78,14 @@ namespace Boilerpipe.Net.Sax {
       }
     }
 
-    public override void EndDocument() {
+    public virtual void EndDocument() {
       FlushBlock();
     }
 
-    public override void StartDocument() {
+    public virtual void StartDocument() {
     }
 
-    public override void StartElement(string uri, string localName, string qName, IAttributes attributes) {
+    public virtual void StartElement(string uri, string localName, string qName, IAttributes attributes) {
       _labelStacks.AddLast((LinkedList<LabelAction>)null);
 
       ITagAction ta;
@@ -103,11 +99,10 @@ namespace Boilerpipe.Net.Sax {
         _flush = true;
       }
 
-      _lastEvent = Event.StartTag;
       _lastStartTag = localName;
     }
 
-    public override void EndElement(string uri, string localName, string qName) {
+    public virtual void EndElement(string uri, string localName, string qName) {
       ITagAction ta;
       if (_tagActions.TryGetValue(localName, out ta)) {
         _flush = ta.End(this, uri, localName, qName) | _flush;
@@ -123,13 +118,12 @@ namespace Boilerpipe.Net.Sax {
         FlushBlock();
       }
 
-      _lastEvent = Event.EndTag;
       _lastEndTag = localName;
 
       _labelStacks.RemoveLast();
     }
 
-    public override void Characters(char[] characters, int start, int length) {
+    public virtual void Characters(char[] characters, int start, int length) {
       _textElementIdx++;
       if (_flush) {
         FlushBlock();
@@ -182,7 +176,6 @@ namespace Boilerpipe.Net.Sax {
         } else {
           SbLastWasWhitespace = false;
         }
-        _lastEvent = Event.Whitespace;
         return;
       }
       if (startWhitespace) {
@@ -204,7 +197,6 @@ namespace Boilerpipe.Net.Sax {
       }
 
       SbLastWasWhitespace = endWhitespace;
-      _lastEvent = Event.Characters;
 
       _currentContainedTextElements.Set(_textElementIdx, true);
     }
@@ -233,7 +225,6 @@ namespace Boilerpipe.Net.Sax {
 
       _lastStartTag = null;
       _lastEndTag = null;
-      _lastEvent = Event.None;
 
       _offsetBlocks = 0;
       _currentContainedTextElements.SetAll(false);
@@ -244,7 +235,7 @@ namespace Boilerpipe.Net.Sax {
 
     public void FlushBlock() {
       if (InBody == 0) {
-        if ("TITLE".Equals(_lastStartTag, StringComparison.CurrentCultureIgnoreCase) && InBody == 0) {
+        if ("TITLE".Equals(_lastStartTag, StringComparison.OrdinalIgnoreCase) && InBody == 0) {
           Title = TokenBuffer.ToString().Trim();
         }
         _textBuffer.Length = 0;
@@ -275,9 +266,9 @@ namespace Boilerpipe.Net.Sax {
       int numWordsCurrentLine = 0;
 
       foreach (string token in tokens) {
-        if (ANCHOR_TEXT_START.Equals(token)) {
+        if (ANCHOR_TEXT_START.Equals(token, StringComparison.Ordinal)) {
           _inAnchorText = true;
-        } else if (ANCHOR_TEXT_END.Equals(token)) {
+        } else if (ANCHOR_TEXT_END.Equals(token, StringComparison.Ordinal)) {
           _inAnchorText = false;
         } else if (IsWord(token)) {
           numTokens++;
@@ -368,14 +359,6 @@ namespace Boilerpipe.Net.Sax {
         _labelStacks.AddLast(labelStack);
       }
       labelStack.AddLast(la);
-    }
-
-    private enum Event {
-      None,
-      StartTag,
-      EndTag,
-      Characters,
-      Whitespace
     }
   }
 }

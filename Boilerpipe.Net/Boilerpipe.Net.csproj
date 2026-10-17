@@ -1,29 +1,30 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>net10.0;net8.0</TargetFrameworks>
+    <Version>2.0.0</Version>
     <PackageId>Boilerpipe.Net.Core</PackageId>
     <Authors>Charalambos Theodorou</Authors>
-    <Company />
-    <Product />
-    <Description>Boilerpipe text extraction library ported to .Net Core based on rasmusjp's implementation in .NET 4.5 which you can find here https://github.com/rasmusjp/boilerpipe.net</Description>
+    <Description>Boilerpipe text extraction library ported to .NET based on rasmusjp's implementation in .NET 4.5 which you can find here https://github.com/rasmusjp/boilerpipe.net</Description>
     <PackageProjectUrl>https://github.com/cgtheodorou/boilerpipe.net-core</PackageProjectUrl>
     <RepositoryUrl>https://github.com/cgtheodorou/boilerpipe.net-core</RepositoryUrl>
-    <RepositoryType>Git</RepositoryType>
-    <PackageTags>Boilerpipe .NET Core Text Extraction</PackageTags>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>boilerpipe;text-extraction;html;boilerplate-removal</PackageTags>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    <None Include="..\README.md;..\LICENSE" Pack="true" PackagePath="\" />
   </ItemGroup>
 
-
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.24" />
-    <PackageReference Include="Sax.Net.Core" Version="1.0.2" />
+    <PackageReference Include="HtmlAgilityPack" />
   </ItemGroup>
 
 </Project>

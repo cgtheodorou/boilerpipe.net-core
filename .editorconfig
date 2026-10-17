@@ -1,0 +1,17 @@
+root = true
+
+[*.cs]
+indent_style = space
+indent_size = 2
+
+# Public members are not all documented yet
+dotnet_diagnostic.CS1591.severity = none
+
+# These would rename or reshape public API inherited from the Java boilerpipe port
+dotnet_diagnostic.CA1707.severity = none
+dotnet_diagnostic.CA1716.severity = none
+dotnet_diagnostic.CA1051.severity = none
+dotnet_diagnostic.CA2211.severity = none
+
+# Making public or protected members static would break callers
+dotnet_code_quality.CA1822.api_surface = private, internal

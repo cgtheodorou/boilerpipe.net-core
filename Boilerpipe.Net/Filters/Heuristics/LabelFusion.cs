@@ -1,4 +1,5 @@
 namespace Boilerpipe.Net.Filters.Heuristics {
+  using System;
   using System.Collections.Generic;
   using System.Linq;
 
@@ -47,7 +48,7 @@ namespace Boilerpipe.Net.Filters.Heuristics {
       return changes;
     }
 
-    private bool EqualLabels(IEnumerable<string> labels, IEnumerable<string> labels2) {
+    private static bool EqualLabels(IEnumerable<string> labels, IEnumerable<string> labels2) {
       if (labels == null || labels2 == null) {
         return false;
       }
@@ -55,7 +56,7 @@ namespace Boilerpipe.Net.Filters.Heuristics {
     }
 
     private static IEnumerable<string> MarkupLabelsOnly(IEnumerable<string> set1) {
-      return set1.Where(x => x.StartsWith(DefaultLabels.MARKUP_PREFIX));
+      return set1.Where(x => x.StartsWith(DefaultLabels.MARKUP_PREFIX, StringComparison.Ordinal));
       //List<string> set = new List<string>(set1);
       //foreach (string it in set.ToList().Where(it => !it.StartsWith(DefaultLabels.MARKUP_PREFIX))) {
       //  set.Remove(it);

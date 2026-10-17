@@ -46,7 +46,7 @@ namespace Boilerpipe.Net.Filters.Heuristics {
 
         IEnumerable<string> labels = block.Labels;
         if (labels != null) {
-          IList<string> enumerable = labels.ToList();
+          List<string> enumerable = labels.ToList();
           if (enumerable.Count > 0) {
             foreach (string l in enumerable) {
               blockBelow.AddLabel(_labelPrefix + l);

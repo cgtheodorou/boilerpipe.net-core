@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Boilerpipe.Net/Boilerpipe.Net.csproj" />
+  <Project Path="Boilerpipe.Net.Tests/Boilerpipe.Net.Tests.csproj" />
+</Solution>

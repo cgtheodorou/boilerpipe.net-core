@@ -40,7 +40,7 @@ namespace Boilerpipe.Net.Filters.Simple {
       return hasChanges;
     }
 
-    private class TextTextBlockCondition : ITextBlockCondition {
+    private sealed class TextTextBlockCondition : ITextBlockCondition {
       public bool MeetsCondition(TextBlock block) {
         return block.LinkDensity == 0 && block.NumWords > 6;
       }

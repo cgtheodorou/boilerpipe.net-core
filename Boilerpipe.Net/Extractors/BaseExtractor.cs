@@ -6,8 +6,6 @@ namespace Boilerpipe.Net.Extractors
     using Boilerpipe.Net.Document;
     using Boilerpipe.Net.Sax;
 
-    using global::Sax.Net;
-
     /// <summary>
     ///     The base class of Extractors. Also provides some helper methods to quickly
     ///     retrieve the text that remained after processing.

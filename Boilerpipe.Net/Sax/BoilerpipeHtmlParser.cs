@@ -2,11 +2,9 @@
   using Boilerpipe.Net.Document;
   using Boilerpipe.Net.Extractors;
 
-  using global::Sax.Net;
-
     /// <summary>
     ///   A simple Parser, used by <see cref="BaseExtractor" />.
-    ///   The parser uses <a href="https://htmlagilitypack.codeplex.com/">HtmlAgilityPack</a> to parse HTML content.
+    ///   The parser uses <a href="https://html-agility-pack.net/">HtmlAgilityPack</a> to parse HTML content.
     /// </summary>
     public class BoilerpipeHtmlParser : IBoilerpipeDocumentSource {
     private BoilerpipeHtmlContentHandler _contentHandler;
@@ -19,17 +17,15 @@
     }
 
     /// <summary>
-    ///   Constructs a <see cref="BoilerpipeHtmlParser"/> using the given <see cref="IContentHandler" />.
+    ///   Constructs a <see cref="BoilerpipeHtmlParser"/> using the given <see cref="BoilerpipeHtmlContentHandler" />.
     /// </summary>
-    /// <param name="contentHandler">the <see cref="IContentHandler" /> to use</param>
+    /// <param name="contentHandler">the <see cref="BoilerpipeHtmlContentHandler" /> to use</param>
     public BoilerpipeHtmlParser(BoilerpipeHtmlContentHandler contentHandler) {
       SetContentHandler(contentHandler);
     }
 
     public void Parse(InputSource source) {
-      IXmlReader parser = new HtmlAgilityPackParser();
-      parser.ContentHandler = _contentHandler;
-      parser.Parse(source);
+      new HtmlAgilityPackParser(_contentHandler).Parse(source);
     }
 
     /// <summary>
@@ -45,10 +41,6 @@
 
     public void SetContentHandler(BoilerpipeHtmlContentHandler contentHandler) {
     	_contentHandler = contentHandler;
-    }
-
-    public void SetContentHandler(IContentHandler contentHandler) {
-    	_contentHandler = null;
     }
   }
 }

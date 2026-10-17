@@ -1,4 +1,5 @@
 namespace Boilerpipe.Net.Filters.English {
+  using System;
   using System.Linq;
 
   using Boilerpipe.Net.Document;
@@ -29,14 +30,14 @@ namespace Boilerpipe.Net.Filters.English {
           string text = tb.Text.Trim();
           int len = text.Length;
           if (len >= 8) {
-            string textLC = text.ToLower();
-            if (textLC.StartsWith("comments") || StartsWithNumber(textLC, len, " comments", " users responded in")
-                || textLC.StartsWith("© reuters") || textLC.StartsWith("please rate this")
-                || textLC.StartsWith("post a comment") || textLC.Contains("what you think...")
-                || textLC.Contains("add your comment") || textLC.Contains("add comment")
-                || textLC.Contains("reader views") || textLC.Contains("have your say")
-                || textLC.Contains("reader comments") || textLC.Contains("rätta artikeln")
-                || textLC.Equals("thanks for your comments - this feedback is now closed")) {
+            string textLC = text.ToLowerInvariant();
+            if (textLC.StartsWith("comments", StringComparison.Ordinal) || StartsWithNumber(textLC, len, " comments", " users responded in")
+                || textLC.StartsWith("© reuters", StringComparison.Ordinal) || textLC.StartsWith("please rate this", StringComparison.Ordinal)
+                || textLC.StartsWith("post a comment", StringComparison.Ordinal) || textLC.Contains("what you think...", StringComparison.Ordinal)
+                || textLC.Contains("add your comment", StringComparison.Ordinal) || textLC.Contains("add comment", StringComparison.Ordinal)
+                || textLC.Contains("reader views", StringComparison.Ordinal) || textLC.Contains("have your say", StringComparison.Ordinal)
+                || textLC.Contains("reader comments", StringComparison.Ordinal) || textLC.Contains("rätta artikeln", StringComparison.Ordinal)
+                || textLC.Equals("thanks for your comments - this feedback is now closed", StringComparison.Ordinal)) {
               tb.AddLabel(DefaultLabels.INDICATES_END_OF_TEXT);
               changes = true;
             }
@@ -69,7 +70,7 @@ namespace Boilerpipe.Net.Filters.English {
       }
       if (j != 0) {
         //return str.Any(s => t.StartsWith(s, j));
-        return str.Any(s => t.Substring(j).StartsWith(s));
+        return str.Any(s => t.AsSpan(j).StartsWith(s, StringComparison.Ordinal));
       }
       return false;
     }

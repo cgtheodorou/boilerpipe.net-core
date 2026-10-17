@@ -1,0 +1,4 @@
+* text=auto
+
+# Extraction output is compared byte for byte, so fixtures must not get CRLF on Windows
+Boilerpipe.Net.Tests/Fixtures/** -text

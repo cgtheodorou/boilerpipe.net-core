@@ -1,6 +1,4 @@
 ﻿namespace Boilerpipe.Net.Sax {
-  using global::Sax.Net;
-
   /// <summary>
   ///   Defines an action that is to be performed whenever a particular tag occurs during HTML parsing.
   /// </summary>
